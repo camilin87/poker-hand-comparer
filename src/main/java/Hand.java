@@ -34,9 +34,21 @@ public class Hand {
     }
 
     public static Hand[] parseMultiple(String[] encodedHands){
-        return Arrays.stream(encodedHands)
+        Hand[] hands = Arrays.stream(encodedHands)
                 .map(Hand::parse)
                 .collect(Collectors.toList())
                 .toArray(new Hand[0]);
+
+        long uniqueCards = Arrays.stream(hands)
+                .map(h -> h.cards)
+                .flatMap(c -> Arrays.stream(c))
+                .distinct()
+                .count();
+
+        if (uniqueCards != hands.length * 5){
+            throw new IllegalArgumentException();
+        }
+
+        return hands;
     }
 }

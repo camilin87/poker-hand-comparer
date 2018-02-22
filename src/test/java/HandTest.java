@@ -1,10 +1,7 @@
 import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class HandTest {
     @Test(expected = NullPointerException.class)
@@ -58,5 +55,14 @@ public class HandTest {
                 .toArray(new String[0]);
 
         assertEquals(String.join("|", expected), String.join("|", actual));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failsWhenDuplicatedCardIsFoundOnDifferentHands(){
+        String[] input = new String[]{
+                "2D 3D 4D 5D 6D",
+                "7D 8D 9D AD 2D"
+        };
+        Hand.parseMultiple(input);
     }
 }
