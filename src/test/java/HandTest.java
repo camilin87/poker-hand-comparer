@@ -1,4 +1,9 @@
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.junit.Assert.*;
 
 public class HandTest {
@@ -32,5 +37,26 @@ public class HandTest {
     @Test(expected = IllegalArgumentException.class)
     public void failsWhenDuplicatedCard(){
         Hand.parse("2D 2D 4D 5D 6D");
+    }
+
+    @Test
+    public void buildsMultipleHandsAtOnce(){
+        String[] expected = new String[]{
+                "2D 3D 4D 5D 6D",
+                "2D 3D 4S 5H 6D",
+                "2C 2D 2H 2S 6D"
+        };
+
+        String[] input = new String[]{
+                "2D 3D 4D 5D 6D",
+                "2d 3D 4S 5h 6D",
+                "2c 2d 2h 2s 6D"
+        };
+        String[] actual = Arrays.stream(Hand.parseMultiple(input))
+                .map(Hand::toString)
+                .collect(Collectors.toList())
+                .toArray(new String[0]);
+
+        assertEquals(String.join("|", expected), String.join("|", actual));
     }
 }

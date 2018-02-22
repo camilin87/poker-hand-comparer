@@ -32,4 +32,11 @@ public class Hand {
                 .toArray(new Card[0]);
         return new Hand(cards);
     }
+
+    public static Hand[] parseMultiple(String[] encodedHands){
+        return Arrays.stream(encodedHands)
+                .map(Hand::parse)
+                .collect(Collectors.toList())
+                .toArray(new Hand[0]);
+    }
 }
