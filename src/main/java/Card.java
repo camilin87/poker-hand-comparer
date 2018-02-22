@@ -1,15 +1,22 @@
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class Card {
     private static final Set<Character> suits = new HashSet<>(Arrays.asList(new Character[]{
             'C', 'D', 'H', 'S'
     }));
 
-    private static final Set<Character> specialValues = new HashSet<>(Arrays.asList(new Character[]{
-            'T', 'J', 'Q', 'K', 'A'
-    }));
+    private static final Map<Character, Integer> values = new HashMap<Character, Integer>(){{
+        IntStream.rangeClosed('2', '9')
+                .mapToObj(i -> (char)i)
+                .forEach(c -> put(c, Character.getNumericValue(c)));
+
+        put('T', 10);
+        put('J', 11);
+        put('Q', 12);
+        put('K', 13);
+        put('A', 14);
+    }};
 
     private char value;
     private char club;
@@ -74,10 +81,10 @@ public class Card {
     }
 
     public static boolean IsValidValue(char c){
-        if (specialValues.contains(c)){
-            return true;
-        }
+        return values.containsKey(c);
+    }
 
-        return Character.isDigit(c) && Character.getNumericValue(c) > 1;
+    public int getNumericValue() {
+        return values.get(value);
     }
 }

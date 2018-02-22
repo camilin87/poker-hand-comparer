@@ -101,6 +101,23 @@ public class CardTest {
         assertNotEquals(Card.parse("3D").hashCode(), Card.parse("4D").hashCode());
     }
 
+    @Test
+    public void calculatesTheNumericValue(){
+        assertEquals(2, Card.parse("2D").getNumericValue());
+        assertEquals(3, Card.parse("3D").getNumericValue());
+        assertEquals(4, Card.parse("4D").getNumericValue());
+        assertEquals(5, Card.parse("5D").getNumericValue());
+        assertEquals(6, Card.parse("6D").getNumericValue());
+        assertEquals(7, Card.parse("7D").getNumericValue());
+        assertEquals(8, Card.parse("8D").getNumericValue());
+        assertEquals(9, Card.parse("9D").getNumericValue());
+        assertEquals(10, Card.parse("TD").getNumericValue());
+        assertEquals(11, Card.parse("JD").getNumericValue());
+        assertEquals(12, Card.parse("QD").getNumericValue());
+        assertEquals(13, Card.parse("KD").getNumericValue());
+        assertEquals(14, Card.parse("AD").getNumericValue());
+    }
+
     private static void assertParseFails(String str){
         try{
             Card.parse(str);
