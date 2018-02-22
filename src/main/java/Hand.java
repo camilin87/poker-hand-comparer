@@ -10,6 +10,10 @@ public class Hand {
             throw new IllegalArgumentException();
         }
 
+        if (Arrays.stream(cards).distinct().count() != 5){
+            throw new IllegalArgumentException();
+        }
+
         this.cards = cards;
     }
 
