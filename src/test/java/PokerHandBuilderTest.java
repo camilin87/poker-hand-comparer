@@ -1,6 +1,4 @@
 import org.junit.Test;
-
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class PokerHandBuilderTest {
@@ -14,6 +12,11 @@ public class PokerHandBuilderTest {
     @Test(expected = IllegalArgumentException.class)
     public void failsWhenEmpty(){
         builder.build("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failsWhenLessThanFiveCards(){
+        builder.build("2D 3D 4D 5D");
     }
 
     @Test
