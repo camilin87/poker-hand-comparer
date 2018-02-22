@@ -1,8 +1,8 @@
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class PokerHandBuilder {
-    public String[] build(String encodedHand){
+public class Hand {
+    public String[] parse(String encodedHand){
         if (encodedHand == null || encodedHand == ""){
             throw new IllegalArgumentException();
         }
