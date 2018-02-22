@@ -17,22 +17,11 @@ public class PokerHandBuilder {
 
         boolean containsInvalidClub = Arrays.stream(cards)
                 .map(c -> c.charAt(1))
-                .anyMatch(PokerHandBuilder::IsInvalidClub);
+                .anyMatch(Card::IsInvalidClub);
         if (containsInvalidClub){
             throw new IllegalArgumentException();
         }
 
         return new String[]{"2D", "3D", "4D", "5D", "6D"};
-    }
-
-    private static boolean IsInvalidClub(char c){
-        return !IsValidClub(c);
-    }
-
-    private static boolean IsValidClub(char c){
-        return c == 'C' ||
-                c == 'D' ||
-                c == 'H' ||
-                c == 'S';
     }
 }
