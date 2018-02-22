@@ -34,6 +34,11 @@ public class PokerHandBuilderTest {
         builder.build("10D 2D 3D 4D 5D");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void failsWhenInvalidClub(){
+        builder.build("2C 3D 4H 5S 6I");
+    }
+
     @Test
     public void buildsHand(){
         String[] expected = {"2D", "3D", "4D", "5D", "6D"};
