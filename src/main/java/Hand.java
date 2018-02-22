@@ -3,14 +3,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Hand {
+    private static final int cardsPerHand = 5;
+
     private final Card[] cards;
 
     private Hand(Card[] cards){
-        if (cards.length != 5){
+        if (cards.length != cardsPerHand){
             throw new IllegalArgumentException();
         }
 
-        if (Arrays.stream(cards).distinct().count() != 5){
+        if (Arrays.stream(cards).distinct().count() != cardsPerHand){
             throw new IllegalArgumentException();
         }
 
@@ -45,7 +47,7 @@ public class Hand {
                 .distinct()
                 .count();
 
-        if (uniqueCards != hands.length * 5){
+        if (uniqueCards != hands.length * cardsPerHand){
             throw new IllegalArgumentException();
         }
 
