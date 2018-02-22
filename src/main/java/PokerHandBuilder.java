@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class PokerHandBuilder {
     public String[] build(String encodedHand){
@@ -15,13 +16,11 @@ public class PokerHandBuilder {
             throw new IllegalArgumentException();
         }
 
-        boolean containsInvalidClub = Arrays.stream(cards)
-                .map(c -> c.charAt(1))
-                .anyMatch(Card::IsInvalidClub);
-        if (containsInvalidClub){
-            throw new IllegalArgumentException();
-        }
+        return Arrays.stream(cards)
+                .map(Card::parse)
+                .map(Card::toString)
+                .collect(Collectors.toList())
+                .toArray(new String[0]);
 
-        return new String[]{"2D", "3D", "4D", "5D", "6D"};
     }
 }
