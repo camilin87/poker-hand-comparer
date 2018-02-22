@@ -24,6 +24,16 @@ public class PokerHandBuilderTest {
         builder.build("3D 3D 4D 5D 6D 7D");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void failsWhenCardTooShort(){
+        builder.build("D 2D 3D 4D 5D");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void failsWhenCardTooLong(){
+        builder.build("10D 2D 3D 4D 5D");
+    }
+
     @Test
     public void buildsHand(){
         String[] expected = {"2D", "3D", "4D", "5D", "6D"};

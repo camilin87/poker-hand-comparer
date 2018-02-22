@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class PokerHandBuilder {
     public String[] build(String encodedHand){
         if (encodedHand == null || encodedHand == ""){
@@ -6,6 +8,10 @@ public class PokerHandBuilder {
 
         String[] cards = encodedHand.split(" ");
         if (cards.length != 5){
+            throw new IllegalArgumentException();
+        }
+
+        if (Arrays.stream(cards).anyMatch(c -> c.length() != 2)){
             throw new IllegalArgumentException();
         }
 
