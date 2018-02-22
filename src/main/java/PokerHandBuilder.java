@@ -5,7 +5,7 @@ public class PokerHandBuilder {
         }
 
         String[] cards = encodedHand.split(" ");
-        if (cards.length < 5){
+        if (cards.length != 5){
             throw new IllegalArgumentException();
         }
 

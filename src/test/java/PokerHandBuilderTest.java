@@ -19,6 +19,11 @@ public class PokerHandBuilderTest {
         builder.build("2D 3D 4D 5D");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void failsWhenMoreThanFiveCards(){
+        builder.build("3D 3D 4D 5D 6D 7D");
+    }
+
     @Test
     public void buildsHand(){
         String[] expected = {"2D", "3D", "4D", "5D", "6D"};
