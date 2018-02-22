@@ -42,15 +42,15 @@ public class HandTest {
     @Test
     public void buildsMultipleHandsAtOnce(){
         String[] expected = new String[]{
-                "2D 3D 4D 5D 6D",
-                "2D 3D 4S 5H 6D",
-                "2C 2D 2H 2S 6D"
+                "7S 3S 4S 5S 6S",
+                "7D 8D 9H 5H 6D",
+                "2C 2D 2H 2S 6C"
         };
 
         String[] input = new String[]{
-                "2D 3D 4D 5D 6D",
-                "2d 3D 4S 5h 6D",
-                "2c 2d 2h 2s 6D"
+                "7S 3S 4S 5S 6S",
+                "7d 8D 9H 5h 6D",
+                "2c 2d 2h 2s 6C"
         };
         String[] actual = Arrays.stream(Hand.parseMultiple(input))
                 .map(Hand::toString)
