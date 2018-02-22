@@ -3,11 +3,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Card {
-    private static final Set<Character> allowedClubs = new HashSet<>(Arrays.asList(new Character[]{
+    private static final Set<Character> suits = new HashSet<>(Arrays.asList(new Character[]{
             'C', 'D', 'H', 'S'
     }));
 
-    private static final Set<Character> suits = new HashSet<>(Arrays.asList(new Character[]{
+    private static final Set<Character> specialValues = new HashSet<>(Arrays.asList(new Character[]{
             'T', 'J', 'Q', 'K', 'A'
     }));
 
@@ -22,7 +22,7 @@ public class Card {
             throw new IllegalArgumentException();
         }
 
-        if (IsInvalidClub(sanitizedClub)){
+        if (IsInvalidSuit(sanitizedClub)){
             throw new IllegalArgumentException();
         }
 
@@ -52,12 +52,12 @@ public class Card {
         return toString().equals(obj.toString());
     }
 
-    public static boolean IsInvalidClub(char c){
-        return !IsValidClub(c);
+    public static boolean IsInvalidSuit(char c){
+        return !IsValidSuit(c);
     }
 
-    public static boolean IsValidClub(char c){
-        return allowedClubs.contains(c);
+    public static boolean IsValidSuit(char c){
+        return suits.contains(c);
     }
 
     public static boolean IsInvalidValue(char c){
@@ -65,7 +65,7 @@ public class Card {
     }
 
     public static boolean IsValidValue(char c){
-        if (suits.contains(c)){
+        if (specialValues.contains(c)){
             return true;
         }
 
