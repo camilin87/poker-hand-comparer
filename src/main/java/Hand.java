@@ -26,19 +26,10 @@ public class Hand {
     }
 
     public static Hand parse(String encodedHand){
-        if (encodedHand == null || encodedHand == ""){
-            throw new IllegalArgumentException();
-        }
-
-        String[] cards = encodedHand.split(" ");
-        if (Arrays.stream(cards).anyMatch(c -> c.length() != 2)){
-            throw new IllegalArgumentException();
-        }
-
-        Card[] handCards = Arrays.stream(cards)
+        Card[] cards = Arrays.stream(encodedHand.split(" "))
                 .map(Card::parse)
                 .collect(Collectors.toList())
                 .toArray(new Card[0]);
-        return new Hand(handCards);
+        return new Hand(cards);
     }
 }

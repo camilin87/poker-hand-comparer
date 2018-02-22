@@ -31,6 +31,10 @@ public class Card {
     }
 
     public static Card parse(String str){
+        if (str.length() != 2){
+            throw new IllegalArgumentException();
+        }
+
         return new Card(str.charAt(0), str.charAt(1));
     }
 

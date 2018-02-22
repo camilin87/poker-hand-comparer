@@ -36,6 +36,26 @@ public class CardTest {
         assertEquals("AD", Card.parse("ad").toString());
     }
 
+    @Test(expected = NullPointerException.class)
+    public void parsingFailsForNull(){
+        Card.parse(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void parsingFailsWhenEmpty(){
+        Card.parse("");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void parsingFailsWhenCardTooShort(){
+        Card.parse("D");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void parsingFailsWhenCardTooLong(){
+        Card.parse("10D");
+    }
+
     @Test
     public void parsingFailsWhenInvalidClub(){
         assertParseFails("2I");
