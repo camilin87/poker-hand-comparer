@@ -27,6 +27,19 @@ public class Card {
         return String.format("%s%s", value, club);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        }
+
+        if (!(obj instanceof Card)){
+            return false;
+        }
+
+        return toString().equals(obj.toString());
+    }
+
     public static boolean IsInvalidClub(char c){
         return !IsValidClub(c);
     }

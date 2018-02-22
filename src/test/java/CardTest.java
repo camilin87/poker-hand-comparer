@@ -56,6 +56,23 @@ public class CardTest {
         assertParseFails("UD");
     }
 
+    @Test
+    public void equalCardsAreEqual(){
+        assertEquals(Card.parse("2D"), Card.parse("2D"));
+        assertEquals(Card.parse("KS"), Card.parse("KS"));
+        assertEquals(Card.parse("2D"), Card.parse("2d"));
+        assertEquals(Card.parse("KS"), Card.parse("ks"));
+    }
+
+    @Test
+    public void differentCardsAreNotEqual(){
+        assertNotEquals(Card.parse("3D"), null);
+        assertNotEquals(null, Card.parse("3D"));
+        assertNotEquals(Card.parse("3D"), "3D");
+        assertNotEquals(Card.parse("3D"), Card.parse("3S"));
+        assertNotEquals(Card.parse("3D"), Card.parse("4D"));
+    }
+
     private static void assertParseFails(String str){
         try{
             Card.parse(str);
