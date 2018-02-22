@@ -1,4 +1,16 @@
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Card {
+    private static final Set<Character> allowedClubs = new HashSet<>(Arrays.asList(new Character[]{
+            'C', 'D', 'H', 'S'
+    }));
+
+    private static final Set<Character> suits = new HashSet<>(Arrays.asList(new Character[]{
+            'T', 'J', 'Q', 'K', 'A'
+    }));
+
     private char value;
     private char club;
 
@@ -45,10 +57,7 @@ public class Card {
     }
 
     public static boolean IsValidClub(char c){
-        return c == 'C' ||
-                c == 'D' ||
-                c == 'H' ||
-                c == 'S';
+        return allowedClubs.contains(c);
     }
 
     public static boolean IsInvalidValue(char c){
@@ -56,11 +65,7 @@ public class Card {
     }
 
     public static boolean IsValidValue(char c){
-        if (c == 'T' ||
-                c == 'J' ||
-                c == 'Q' ||
-                c == 'K' ||
-                c == 'A'){
+        if (suits.contains(c)){
             return true;
         }
 
