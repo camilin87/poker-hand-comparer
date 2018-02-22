@@ -5,6 +5,18 @@ public class CardTest {
     @Test
     public void canBeBuiltOutOfATwoDigitString(){
         assertEquals("2D", Card.parse("2D").toString());
+        assertEquals("3D", Card.parse("3D").toString());
+        assertEquals("4D", Card.parse("4D").toString());
+        assertEquals("5D", Card.parse("5D").toString());
+        assertEquals("6D", Card.parse("6D").toString());
+        assertEquals("7D", Card.parse("7D").toString());
+        assertEquals("8D", Card.parse("8D").toString());
+        assertEquals("9D", Card.parse("9D").toString());
+        assertEquals("TD", Card.parse("TD").toString());
+        assertEquals("JD", Card.parse("JD").toString());
+        assertEquals("QD", Card.parse("QD").toString());
+        assertEquals("KD", Card.parse("KD").toString());
+        assertEquals("AD", Card.parse("AD").toString());
     }
 
     @Test
@@ -18,6 +30,13 @@ public class CardTest {
     public void parsingFailsWhenValueTooLow(){
         assertParseFails("0D");
         assertParseFails("1D");
+    }
+
+    @Test
+    public void parsingFailsWhenValueIsInvalid(){
+        assertParseFails("YD");
+        assertParseFails("BD");
+        assertParseFails("UD");
     }
 
     private static void assertParseFails(String str){

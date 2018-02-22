@@ -40,6 +40,14 @@ public class Card {
     }
 
     public static boolean IsValidValue(char c){
-        return Character.getNumericValue(c) > 1;
+        if (c == 'T' ||
+                c == 'J' ||
+                c == 'Q' ||
+                c == 'K' ||
+                c == 'A'){
+            return true;
+        }
+
+        return Character.isDigit(c) && Character.getNumericValue(c) > 1;
     }
 }
