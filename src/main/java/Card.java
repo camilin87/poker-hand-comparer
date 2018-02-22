@@ -52,6 +52,11 @@ public class Card {
         return toString().equals(obj.toString());
     }
 
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
+
     public static boolean IsInvalidSuit(char c){
         return !IsValidSuit(c);
     }

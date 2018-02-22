@@ -62,6 +62,11 @@ public class CardTest {
         assertEquals(Card.parse("KS"), Card.parse("KS"));
         assertEquals(Card.parse("2D"), Card.parse("2d"));
         assertEquals(Card.parse("KS"), Card.parse("ks"));
+
+        assertEquals(Card.parse("2D").hashCode(), Card.parse("2D").hashCode());
+        assertEquals(Card.parse("KS").hashCode(), Card.parse("KS").hashCode());
+        assertEquals(Card.parse("2D").hashCode(), Card.parse("2d").hashCode());
+        assertEquals(Card.parse("KS").hashCode(), Card.parse("ks").hashCode());
     }
 
     @Test
@@ -71,6 +76,9 @@ public class CardTest {
         assertNotEquals(Card.parse("3D"), "3D");
         assertNotEquals(Card.parse("3D"), Card.parse("3S"));
         assertNotEquals(Card.parse("3D"), Card.parse("4D"));
+
+        assertNotEquals(Card.parse("3D").hashCode(), Card.parse("3S").hashCode());
+        assertNotEquals(Card.parse("3D").hashCode(), Card.parse("4D").hashCode());
     }
 
     private static void assertParseFails(String str){
