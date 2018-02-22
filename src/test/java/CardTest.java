@@ -20,6 +20,23 @@ public class CardTest {
     }
 
     @Test
+    public void canBeBuiltOutOfATwoDigitLowercasedString(){
+        assertEquals("2D", Card.parse("2d").toString());
+        assertEquals("3D", Card.parse("3d").toString());
+        assertEquals("4D", Card.parse("4d").toString());
+        assertEquals("5D", Card.parse("5d").toString());
+        assertEquals("6D", Card.parse("6d").toString());
+        assertEquals("7D", Card.parse("7d").toString());
+        assertEquals("8D", Card.parse("8d").toString());
+        assertEquals("9D", Card.parse("9d").toString());
+        assertEquals("TD", Card.parse("td").toString());
+        assertEquals("JD", Card.parse("jd").toString());
+        assertEquals("QD", Card.parse("qd").toString());
+        assertEquals("KD", Card.parse("kd").toString());
+        assertEquals("AD", Card.parse("ad").toString());
+    }
+
+    @Test
     public void parsingFailsWhenInvalidClub(){
         assertParseFails("2I");
         assertParseFails("2U");

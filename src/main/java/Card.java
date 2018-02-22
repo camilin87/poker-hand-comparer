@@ -3,16 +3,19 @@ public class Card {
     private char club;
 
     private Card(char value, char club){
-        if (IsInvalidClub(club)){
+        char sanitizedValue = Character.toUpperCase(value);
+        char sanitizedClub = Character.toUpperCase(club);
+
+        if (IsInvalidValue(sanitizedValue)){
             throw new IllegalArgumentException();
         }
 
-        if (IsInvalidValue(value)){
+        if (IsInvalidClub(sanitizedClub)){
             throw new IllegalArgumentException();
         }
 
-        this.value = value;
-        this.club = club;
+        this.value = sanitizedValue;
+        this.club = sanitizedClub;
     }
 
     public static Card parse(String str){
