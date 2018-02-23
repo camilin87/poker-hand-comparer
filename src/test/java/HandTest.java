@@ -143,6 +143,14 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void equalTwoPairsAreUntiedByHighestCard(){
+        assertIsStrongest("2H 2S 4D 4H 9H", new String[]{
+                "2H 2S 4D 4H 9H",
+                "4C 4S 2C 2D 7D"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 
