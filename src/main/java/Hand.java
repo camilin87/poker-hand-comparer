@@ -61,20 +61,40 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        int[] theseValues = Arrays.stream(this.cards)
+        if (this.isPair() && !that.isPair()){
+            return 1;
+        }
+
+        if (that.isPair() && !this.isPair()){
+            return -1;
+        }
+
+        return compareForHighestValue(this, that);
+    }
+
+    private boolean isPair(){
+        long uniqueValues = Arrays.stream(cards)
+                .map(Card::getNumericValue)
+                .distinct()
+                .count();
+        return uniqueValues == 4;
+    }
+
+    private static int compareForHighestValue(Hand h1, Hand h2){
+        int[] h1Values = Arrays.stream(h1.cards)
                 .map(Card::getNumericValue)
                 .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
 
-        int[] thoseValues = Arrays.stream(that.cards)
+        int[] h2Values = Arrays.stream(h2.cards)
                 .map(Card::getNumericValue)
                 .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
 
         return IntStream.range(0, cardsPerHand)
-                .map(i -> Integer.compare(theseValues[i], thoseValues[i]))
+                .map(i -> Integer.compare(h1Values[i], h2Values[i]))
                 .filter(i -> i != 0)
                 .findFirst()
                 .orElse(0);

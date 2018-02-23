@@ -90,6 +90,19 @@ public class HandTest {
         ));
     }
 
+    @Test
+    public void onePairBeatsCommonCards(){
+        assertIsStrongest("2H 2S 7D 5H 9H", new String[]{
+                "2H 2S 7D 5H 9H",
+                "AH 9D 8H 4D 2D"
+        });
+
+        assertIsStrongest("2H 2S 7D 5H 9H", new String[]{
+                "AH 9D 8H 4D 2D",
+                "2H 2S 7D 5H 9H"
+        });
+    }
+
     private void assertIsStrongest(String expected, String[] hands){
         String strongest = Arrays.stream(Hand.parseMultiple(hands))
                 .sorted()
