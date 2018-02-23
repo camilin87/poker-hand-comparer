@@ -127,6 +127,22 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void twoPairsBeatsWeakerTwoPairWhenTheStrongestOneIsDifferent(){
+        assertIsStrongest("AH AD 3H 3S 2D", new String[]{
+                "2H 2S 4D 4H 9H",
+                "AH AD 3H 3S 2D"
+        });
+    }
+
+    @Test
+    public void twoPairsBeatsWeakerTwoPairWhenTheStrongestOneIsEquivalent(){
+        assertIsStrongest("4C 4S 3H 3S 2D", new String[]{
+                "2H 2S 4D 4H 9H",
+                "4C 4S 3H 3S 2D"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 

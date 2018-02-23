@@ -79,7 +79,12 @@ public class Hand implements Comparable<Hand> {
         int[] p1 = h1.pairValues();
         int[] p2 = h2.pairValues();
 
-        return Integer.compare(p1.length, p2.length);
+        int pairLengthComparison = Integer.compare(p1.length, p2.length);
+        if (pairLengthComparison != EQUAL_COMPARISON){
+            return pairLengthComparison;
+        }
+
+        return Integer.compare(Arrays.stream(p1).sum(), Arrays.stream(p2).sum());
     }
 
     private static int compareForPairs(Hand h1, Hand h2){
