@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Hand implements Comparable<Hand> {
-    private static final int NOT_FOUND = -1;
     private static final int EQUAL_COMPARISON = 0;
     private static final int CARDS_PER_HAND = 5;
     private static final String CARD_DELIMITER = " ";
@@ -82,6 +81,17 @@ public class Hand implements Comparable<Hand> {
         return Integer.compare(Arrays.stream(p1).sum(), Arrays.stream(p2).sum());
     }
 
+    private static int compareForHighestValue(Hand h1, Hand h2){
+        int[] h1Values = h1.getValuesSortedDesc();
+        int[] h2Values = h2.getValuesSortedDesc();
+
+        return IntStream.range(0, CARDS_PER_HAND)
+                .map(i -> Integer.compare(h1Values[i], h2Values[i]))
+                .filter(i -> i != EQUAL_COMPARISON)
+                .findFirst()
+                .orElse(EQUAL_COMPARISON);
+    }
+
     private int[] pairValues(){
         Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
                 .collect(Collectors.groupingBy(Card::getNumericValue));
@@ -94,23 +104,11 @@ public class Hand implements Comparable<Hand> {
                 .toArray();
     }
 
-    private static int compareForHighestValue(Hand h1, Hand h2){
-        int[] h1Values = Arrays.stream(h1.cards)
+    private int[] getValuesSortedDesc(){
+        return Arrays.stream(cards)
                 .map(Card::getNumericValue)
                 .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
-
-        int[] h2Values = Arrays.stream(h2.cards)
-                .map(Card::getNumericValue)
-                .sorted((i, j) -> Integer.compare(j, i))
-                .mapToInt(i -> i)
-                .toArray();
-
-        return IntStream.range(0, CARDS_PER_HAND)
-                .map(i -> Integer.compare(h1Values[i], h2Values[i]))
-                .filter(i -> i != EQUAL_COMPARISON)
-                .findFirst()
-                .orElse(EQUAL_COMPARISON);
     }
 }
