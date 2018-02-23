@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -7,6 +8,7 @@ public class Hand implements Comparable<Hand> {
     private static final int NOT_FOUND = -1;
     private static final int EQUAL_COMPARISON = 0;
     private static final int CARDS_PER_HAND = 5;
+    private static final String CARD_DELIMITER = " ";
 
     private final Card[] cards;
 
@@ -24,14 +26,13 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public String toString() {
-        List<String> result = Arrays.stream(cards)
+        return Arrays.stream(cards)
                 .map(Card::toString)
-                .collect(Collectors.toList());
-        return String.join(" ", result);
+                .collect(Collectors.joining(CARD_DELIMITER));
     }
 
     public static Hand parse(String encodedHand){
-        Card[] cards = Arrays.stream(encodedHand.split(" "))
+        Card[] cards = Arrays.stream(encodedHand.split(CARD_DELIMITER))
                 .map(Card::parse)
                 .collect(Collectors.toList())
                 .toArray(new Card[0]);
@@ -72,12 +73,13 @@ public class Hand implements Comparable<Hand> {
     }
 
     private int pairValue(){
-        int[] values = Arrays.stream(cards)
-                .mapToInt(Card::getNumericValue)
-                .toArray();
+        Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
+                .collect(Collectors.groupingBy(Card::getNumericValue));
 
-        return Arrays.stream(values)
-                .filter(i -> Arrays.stream(values).filter(j -> j == i).count() == 2)
+        return equivalentCards
+                .keySet()
+                .stream()
+                .filter(k -> equivalentCards.get(k).size() == 2)
                 .findFirst()
                 .orElse(NOT_FOUND);
     }
