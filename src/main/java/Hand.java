@@ -14,11 +14,11 @@ public class Hand implements Comparable<Hand> {
 
     private Hand(Card[] cards){
         if (cards.length != CARDS_PER_HAND){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid number or cards in Hand");
         }
 
         if (Arrays.stream(cards).distinct().count() != CARDS_PER_HAND){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Found duplicate cards in Hand");
         }
 
         this.cards = cards;
@@ -50,7 +50,7 @@ public class Hand implements Comparable<Hand> {
                 .count();
 
         if (uniqueCards != hands.length * CARDS_PER_HAND){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Found duplicate cards in set");
         }
 
         return hands;

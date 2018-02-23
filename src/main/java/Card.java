@@ -26,11 +26,11 @@ public class Card {
         char sanitizedClub = Character.toUpperCase(club);
 
         if (IsInvalidValue(sanitizedValue)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Card value");
         }
 
         if (IsInvalidSuit(sanitizedClub)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Card suit");
         }
 
         this.value = sanitizedValue;
@@ -39,7 +39,7 @@ public class Card {
 
     public static Card parse(final String str){
         if (str.length() != CARD_LENGTH){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid Card length");
         }
 
         return new Card(str.charAt(0), str.charAt(1));
