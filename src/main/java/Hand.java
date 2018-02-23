@@ -63,6 +63,11 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
+        int straightComparison = compareForStraight(this, that);
+        if (straightComparison != EQUAL_COMPARISON){
+            return straightComparison;
+        }
+
         int threeOfAKindComparison = compareForEquivalentGroups(this, that, THREE_OF_A_KIND_SIZE);
         if (threeOfAKindComparison != EQUAL_COMPARISON){
             return threeOfAKindComparison;
@@ -74,6 +79,13 @@ public class Hand implements Comparable<Hand> {
         }
 
         return compareForHighestValue(this, that);
+    }
+
+    private static int compareForStraight(Hand h1, Hand h2){
+        int s1 = h1.isStraight() ? 1 : 0;
+        int s2 = h2.isStraight() ? 1 : 0;
+
+        return Integer.compare(s1, s2);
     }
 
     private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
@@ -114,6 +126,13 @@ public class Hand implements Comparable<Hand> {
                 .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
+    }
+
+    private boolean isStraight(){
+        int[] handValues = getValuesSortedDesc();
+        return IntStream.range(0, handValues.length - 1)
+                .map(i -> handValues[i] - handValues[i + 1])
+                .allMatch(i -> i == 1);
     }
 
     private int[] getValuesSortedDesc(){

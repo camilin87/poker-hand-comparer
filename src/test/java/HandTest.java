@@ -172,6 +172,14 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void straightBeatsThreeOfAKind(){
+        assertIsStrongest("2C 3D 4H 5S 6C", new String[]{
+                "2C 3D 4H 5S 6C",
+                "AC AS AD 3H 7D"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 
