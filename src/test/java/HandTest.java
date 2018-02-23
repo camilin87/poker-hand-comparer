@@ -120,11 +120,10 @@ public class HandTest {
     }
 
     @Test
-    @Ignore("WIP")
     public void twoPairsBeatsAPair(){
         assertIsStrongest("2H 2S 4D 4H 9H", new String[]{
                 "2H 2S 4D 4H 9H",
-                "AH AD 8H 4D 2D"
+                "AH AD 8H 4S 2D"
         });
     }
 

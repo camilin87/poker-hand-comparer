@@ -62,6 +62,11 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
+        int twoPairComparison = compareForTwoPais(this, that);
+        if (twoPairComparison != EQUAL_COMPARISON){
+            return twoPairComparison;
+        }
+
         int pairComparison = compareForPairs(this, that);
         if (pairComparison != EQUAL_COMPARISON){
             return pairComparison;
@@ -70,16 +75,11 @@ public class Hand implements Comparable<Hand> {
         return compareForHighestValue(this, that);
     }
 
-    private int pairValue(){
-        Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
-                .collect(Collectors.groupingBy(Card::getNumericValue));
+    private static int compareForTwoPais(Hand h1, Hand h2){
+        int[] p1 = h1.pairValues();
+        int[] p2 = h2.pairValues();
 
-        return equivalentCards
-                .keySet()
-                .stream()
-                .filter(k -> equivalentCards.get(k).size() == 2)
-                .findFirst()
-                .orElse(NOT_FOUND);
+        return Integer.compare(p1.length, p2.length);
     }
 
     private static int compareForPairs(Hand h1, Hand h2){
@@ -91,6 +91,24 @@ public class Hand implements Comparable<Hand> {
         }
 
         return Integer.compare(v1, v2);
+    }
+
+    private int pairValue(){
+        return Arrays.stream(pairValues())
+                .max()
+                .orElse(NOT_FOUND);
+    }
+
+    private int[] pairValues(){
+        Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
+                .collect(Collectors.groupingBy(Card::getNumericValue));
+
+        return equivalentCards
+                .keySet()
+                .stream()
+                .filter(k -> equivalentCards.get(k).size() == 2)
+                .mapToInt(i -> i)
+                .toArray();
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
