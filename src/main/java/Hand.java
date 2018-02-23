@@ -31,23 +31,21 @@ public class Hand implements Comparable<Hand> {
                 .collect(Collectors.joining(CARD_DELIMITER));
     }
 
-    public static Hand parse(String encodedHand){
+    public static Hand parse(final String encodedHand){
         Card[] cards = Arrays.stream(encodedHand.split(CARD_DELIMITER))
                 .map(Card::parse)
-                .collect(Collectors.toList())
-                .toArray(new Card[0]);
+                .toArray(Card[]::new);
         return new Hand(cards);
     }
 
-    public static Hand[] parseMultiple(String[] encodedHands){
+    public static Hand[] parseMultiple(final String[] encodedHands){
         Hand[] hands = Arrays.stream(encodedHands)
                 .map(Hand::parse)
-                .collect(Collectors.toList())
-                .toArray(new Hand[0]);
+                .toArray(Hand[]::new);
 
         long uniqueCards = Arrays.stream(hands)
                 .map(h -> h.cards)
-                .flatMap(c -> Arrays.stream(c))
+                .flatMap(Arrays::stream)
                 .distinct()
                 .count();
 

@@ -4,9 +4,7 @@ import java.util.stream.IntStream;
 public class Card {
     private static final int CARD_LENGTH = 2;
 
-    private static final Set<Character> suits = new HashSet<>(Arrays.asList(new Character[]{
-            'C', 'D', 'H', 'S'
-    }));
+    private static final Set<Character> suits = new HashSet<>(Arrays.asList('C', 'D', 'H', 'S'));
 
     private static final Map<Character, Integer> values = new HashMap<Character, Integer>(){{
         IntStream.rangeClosed('2', '9')
@@ -39,7 +37,7 @@ public class Card {
         this.club = sanitizedClub;
     }
 
-    public static Card parse(String str){
+    public static Card parse(final String str){
         if (str.length() != CARD_LENGTH){
             throw new IllegalArgumentException();
         }
@@ -54,15 +52,12 @@ public class Card {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null){
+        if (obj == null) {
             return false;
         }
 
-        if (!(obj instanceof Card)){
-            return false;
-        }
+        return obj instanceof Card && toString().equals(obj.toString());
 
-        return toString().equals(obj.toString());
     }
 
     @Override
@@ -70,19 +65,19 @@ public class Card {
         return toString().hashCode();
     }
 
-    public static boolean IsInvalidSuit(char c){
+    private static boolean IsInvalidSuit(char c){
         return !IsValidSuit(c);
     }
 
-    public static boolean IsValidSuit(char c){
+    private static boolean IsValidSuit(char c){
         return suits.contains(c);
     }
 
-    public static boolean IsInvalidValue(char c){
+    private static boolean IsInvalidValue(char c){
         return !IsValidValue(c);
     }
 
-    public static boolean IsValidValue(char c){
+    private static boolean IsValidValue(char c){
         return values.containsKey(c);
     }
 
