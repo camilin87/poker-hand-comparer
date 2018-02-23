@@ -1,5 +1,11 @@
+import org.junit.Ignore;
 import org.junit.Test;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 
@@ -51,8 +57,7 @@ public class HandTest {
         };
         String[] actual = Arrays.stream(Hand.parseMultiple(input))
                 .map(Hand::toString)
-                .collect(Collectors.toList())
-                .toArray(new String[0]);
+                .toArray(String[]::new);
 
         assertEquals(String.join("|", expected), String.join("|", actual));
     }
@@ -96,11 +101,6 @@ public class HandTest {
                 "2H 2S 7D 5H 9H",
                 "AH 9D 8H 4D 2D"
         });
-
-        assertIsStrongest("2H 2S 7D 5H 9H", new String[]{
-                "AH 9D 8H 4D 2D",
-                "2H 2S 7D 5H 9H"
-        });
     }
 
     @Test
@@ -108,11 +108,6 @@ public class HandTest {
         assertIsStrongest("AH 8D 8H 4D 2D", new String[]{
                 "2H 2S 7D 5H 9H",
                 "AH 8D 8H 4D 2D"
-        });
-
-        assertIsStrongest("AH 8D 8H 4D 2D", new String[]{
-                "AH 8D 8H 4D 2D",
-                "2H 2S 7D 5H 9H"
         });
     }
 
@@ -122,14 +117,27 @@ public class HandTest {
                 "2H 2S 7D 5H 9H",
                 "AH 8D 8H 2C 2D"
         });
+    }
 
-        assertIsStrongest("AH 8D 8H 2C 2D", new String[]{
-                "AH 8D 8H 2C 2D",
-                "2H 2S 7D 5H 9H"
+    @Test
+    @Ignore("WIP")
+    public void twoPairsBeatsAPair(){
+        assertIsStrongest("2H 2S 4D 4H 9H", new String[]{
+                "2H 2S 4D 4H 9H",
+                "AH AD 8H 4D 2D"
         });
     }
 
-    private void assertIsStrongest(String expected, String[] hands){
+    private void assertIsStrongest(final String expected, final String[] hands) {
+        assertIsStrongestInternal(expected, hands);
+
+        List<String> handsList = Arrays.asList(hands);
+        Collections.reverse(handsList);
+        String[] reversedHands = handsList.toArray(new String[0]);
+        assertIsStrongestInternal(expected, reversedHands);
+    }
+
+    private void assertIsStrongestInternal(final String expected, final String[] hands){
         String strongest = Arrays.stream(Hand.parseMultiple(hands))
                 .sorted()
                 .skip(hands.length - 1)
