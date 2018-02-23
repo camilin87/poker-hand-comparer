@@ -85,14 +85,11 @@ public class Hand implements Comparable<Hand> {
             return countComparison;
         }
 
-        for (int i = 0; i < groups1.length; i++) {
-            int result = Integer.compare(groups1[i], groups2[i]);
-            if (result != EQUAL_COMPARISON){
-                return result;
-            }
-        }
-
-        return EQUAL_COMPARISON;
+        return IntStream.range(0, groups1.length)
+                .map(i -> Integer.compare(groups1[i], groups2[i]))
+                .filter(i -> i != EQUAL_COMPARISON)
+                .findFirst()
+                .orElse(EQUAL_COMPARISON);
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
