@@ -103,6 +103,32 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void onePairBeatsAWeakerPair(){
+        assertIsStrongest("AH 8D 8H 4D 2D", new String[]{
+                "2H 2S 7D 5H 9H",
+                "AH 8D 8H 4D 2D"
+        });
+
+        assertIsStrongest("AH 8D 8H 4D 2D", new String[]{
+                "AH 8D 8H 4D 2D",
+                "2H 2S 7D 5H 9H"
+        });
+    }
+
+    @Test
+    public void equalPairsAreUntiedByHighestValueCard(){
+        assertIsStrongest("AH 8D 8H 2C 2D", new String[]{
+                "2H 2S 7D 5H 9H",
+                "AH 8D 8H 2C 2D"
+        });
+
+        assertIsStrongest("AH 8D 8H 2C 2D", new String[]{
+                "AH 8D 8H 2C 2D",
+                "2H 2S 7D 5H 9H"
+        });
+    }
+
     private void assertIsStrongest(String expected, String[] hands){
         String strongest = Arrays.stream(Hand.parseMultiple(hands))
                 .sorted()

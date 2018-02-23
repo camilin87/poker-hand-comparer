@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Hand implements Comparable<Hand> {
+    private static final int notFound = -1;
     private static final int cardsPerHand = 5;
 
     private final Card[] cards;
@@ -61,23 +62,25 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        if (this.isPair() && !that.isPair()){
-            return 1;
-        }
+        int thisPair = this.pairValue();
+        int thatPair = that.pairValue();
 
-        if (that.isPair() && !this.isPair()){
-            return -1;
+        if (thisPair != thatPair){
+            return Integer.compare(thisPair, thatPair);
         }
 
         return compareForHighestValue(this, that);
     }
 
-    private boolean isPair(){
-        long uniqueValues = Arrays.stream(cards)
-                .map(Card::getNumericValue)
-                .distinct()
-                .count();
-        return uniqueValues == 4;
+    private int pairValue(){
+        int[] values = Arrays.stream(cards)
+                .mapToInt(Card::getNumericValue)
+                .toArray();
+
+        return Arrays.stream(values)
+                .filter(i -> Arrays.stream(values).filter(j -> j == i).count() == 2)
+                .findFirst()
+                .orElse(notFound);
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
