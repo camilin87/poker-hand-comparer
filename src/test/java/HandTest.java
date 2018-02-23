@@ -65,4 +65,23 @@ public class HandTest {
         };
         Hand.parseMultiple(input);
     }
+
+    @Test
+    public void handWithHighestCardWins(){
+        assertIsStrongest("3D 9C 8D 4H 2H", new String[]{
+                "3D 9C 8D 4H 2H",
+                "3H 7D 8H 4D 2D"
+        });
+    }
+
+    private void assertIsStrongest(String expected, String[] hands){
+        String strongest = Arrays.stream(Hand.parseMultiple(hands))
+                .sorted()
+                .skip(hands.length - 1)
+                .limit(1)
+                .findFirst()
+                .get()
+                .toString();
+        assertEquals(expected, strongest);
+    }
 }

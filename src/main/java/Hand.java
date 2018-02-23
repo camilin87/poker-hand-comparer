@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hand {
+public class Hand implements Comparable<Hand> {
     private static final int cardsPerHand = 5;
 
     private final Card[] cards;
@@ -52,5 +52,20 @@ public class Hand {
         }
 
         return hands;
+    }
+
+    @Override
+    public int compareTo(Hand that) {
+        int thisMaxValue = Arrays.stream(this.cards)
+                .mapToInt(Card::getNumericValue)
+                .max()
+                .getAsInt();
+
+        int thatMaxValue = Arrays.stream(that.cards)
+                .mapToInt(Card::getNumericValue)
+                .max()
+                .getAsInt();
+
+        return Integer.compare(thisMaxValue, thatMaxValue);
     }
 }
