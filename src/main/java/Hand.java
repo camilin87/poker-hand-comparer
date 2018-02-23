@@ -5,9 +5,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Hand implements Comparable<Hand> {
+    private static final String CARD_DELIMITER = " ";
     private static final int EQUAL_COMPARISON = 0;
     private static final int CARDS_PER_HAND = 5;
-    private static final String CARD_DELIMITER = " ";
+    private static final int PAIR_SIZE = 2;
+    private static final int THREE_OF_A_KIND_SIZE = 3;
 
     private final Card[] cards;
 
@@ -61,12 +63,12 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        int threeOfAKindComparison = compareForEquivalentGroups(this, that, 3);
+        int threeOfAKindComparison = compareForEquivalentGroups(this, that, THREE_OF_A_KIND_SIZE);
         if (threeOfAKindComparison != EQUAL_COMPARISON){
             return threeOfAKindComparison;
         }
 
-        int pairsComparison = compareForEquivalentGroups(this, that, 2);
+        int pairsComparison = compareForEquivalentGroups(this, that, PAIR_SIZE);
         if (pairsComparison != EQUAL_COMPARISON){
             return pairsComparison;
         }
