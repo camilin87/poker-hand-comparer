@@ -20,8 +20,8 @@ public class Card {
         put('A', 14);
     }};
 
-    private char value;
-    private char club;
+    private final char value;
+    private final char club;
 
     private Card(char value, char club){
         char sanitizedValue = Character.toUpperCase(value);
