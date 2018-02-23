@@ -61,7 +61,12 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        int pairsComparison = compareForPairs(this, that);
+        int threeOfAKindComparison = compareForEquivalentGroups(this, that, 3);
+        if (threeOfAKindComparison != EQUAL_COMPARISON){
+            return threeOfAKindComparison;
+        }
+
+        int pairsComparison = compareForEquivalentGroups(this, that, 2);
         if (pairsComparison != EQUAL_COMPARISON){
             return pairsComparison;
         }
@@ -69,16 +74,18 @@ public class Hand implements Comparable<Hand> {
         return compareForHighestValue(this, that);
     }
 
-    private static int compareForPairs(Hand h1, Hand h2){
-        int[] p1 = h1.pairValues();
-        int[] p2 = h2.pairValues();
+    private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
+        int[] groups1 = h1.equivalentValues(groupSize);
+        int[] groups2 = h2.equivalentValues(groupSize);
 
-        int pairLengthComparison = Integer.compare(p1.length, p2.length);
-        if (pairLengthComparison != EQUAL_COMPARISON){
-            return pairLengthComparison;
+        int countComparison = Integer.compare(groups1.length, groups2.length);
+        if (countComparison != EQUAL_COMPARISON){
+            return countComparison;
         }
 
-        return Integer.compare(Arrays.stream(p1).sum(), Arrays.stream(p2).sum());
+        int groupSum1 = Arrays.stream(groups1).sum();
+        int groupSum2 = Arrays.stream(groups2).sum();
+        return Integer.compare(groupSum1, groupSum2);
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
@@ -92,14 +99,14 @@ public class Hand implements Comparable<Hand> {
                 .orElse(EQUAL_COMPARISON);
     }
 
-    private int[] pairValues(){
+    private int[] equivalentValues(int groupSize){
         Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
                 .collect(Collectors.groupingBy(Card::getNumericValue));
 
         return equivalentCards
                 .keySet()
                 .stream()
-                .filter(k -> equivalentCards.get(k).size() == 2)
+                .filter(k -> equivalentCards.get(k).size() == groupSize)
                 .mapToInt(i -> i)
                 .toArray();
     }

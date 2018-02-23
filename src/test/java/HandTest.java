@@ -120,7 +120,7 @@ public class HandTest {
     }
 
     @Test
-    public void twoPairsBeatsAPair(){
+    public void twoPairBeatsPair(){
         assertIsStrongest("2H 2S 4D 4H 9H", new String[]{
                 "2H 2S 4D 4H 9H",
                 "AH AD 8H 4S 2D"
@@ -128,7 +128,7 @@ public class HandTest {
     }
 
     @Test
-    public void twoPairsBeatsWeakerTwoPairWhenTheStrongestOneIsDifferent(){
+    public void twoPairBeatsWeakerTwoPairWhenTheStrongestOneIsDifferent(){
         assertIsStrongest("AH AD 3H 3S 2D", new String[]{
                 "2H 2S 4D 4H 9H",
                 "AH AD 3H 3S 2D"
@@ -136,7 +136,7 @@ public class HandTest {
     }
 
     @Test
-    public void twoPairsBeatsWeakerTwoPairWhenTheStrongestOneIsEquivalent(){
+    public void twoPairBeatsWeakerTwoPairWhenTheStrongestOneIsEquivalent(){
         assertIsStrongest("4C 4S 3H 3S 2D", new String[]{
                 "2H 2S 4D 4H 9H",
                 "4C 4S 3H 3S 2D"
@@ -148,6 +148,22 @@ public class HandTest {
         assertIsStrongest("2H 2S 4D 4H 9H", new String[]{
                 "2H 2S 4D 4H 9H",
                 "4C 4S 2C 2D 7D"
+        });
+    }
+
+    @Test
+    public void threeOfAKindBeatsTwoPair(){
+        assertIsStrongest("2H 2S 2D 4H 9H", new String[]{
+                "2H 2S 2D 4H 9H",
+                "9C 9S 2C 7H 7D"
+        });
+    }
+
+    @Test
+    public void threeOfAKindBeatsWeakerThreeOfAKind(){
+        assertIsStrongest("9C 9S 9D 3H 7D", new String[]{
+                "2H 2S 2D AH 9H",
+                "9C 9S 9D 3H 7D"
         });
     }
 
