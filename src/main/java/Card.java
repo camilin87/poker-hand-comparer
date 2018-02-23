@@ -2,6 +2,8 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 public class Card {
+    private static final int CARD_LENGTH = 2;
+
     private static final Set<Character> suits = new HashSet<>(Arrays.asList(new Character[]{
             'C', 'D', 'H', 'S'
     }));
@@ -38,7 +40,7 @@ public class Card {
     }
 
     public static Card parse(String str){
-        if (str.length() != 2){
+        if (str.length() != CARD_LENGTH){
             throw new IllegalArgumentException();
         }
 

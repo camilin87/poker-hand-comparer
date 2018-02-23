@@ -4,17 +4,18 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Hand implements Comparable<Hand> {
-    private static final int notFound = -1;
-    private static final int cardsPerHand = 5;
+    private static final int NOT_FOUND = -1;
+    private static final int EQUAL_COMPARISON = 0;
+    private static final int CARDS_PER_HAND = 5;
 
     private final Card[] cards;
 
     private Hand(Card[] cards){
-        if (cards.length != cardsPerHand){
+        if (cards.length != CARDS_PER_HAND){
             throw new IllegalArgumentException();
         }
 
-        if (Arrays.stream(cards).distinct().count() != cardsPerHand){
+        if (Arrays.stream(cards).distinct().count() != CARDS_PER_HAND){
             throw new IllegalArgumentException();
         }
 
@@ -49,7 +50,7 @@ public class Hand implements Comparable<Hand> {
                 .distinct()
                 .count();
 
-        if (uniqueCards != hands.length * cardsPerHand){
+        if (uniqueCards != hands.length * CARDS_PER_HAND){
             throw new IllegalArgumentException();
         }
 
@@ -62,11 +63,9 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        int thisPair = this.pairValue();
-        int thatPair = that.pairValue();
-
-        if (thisPair != thatPair){
-            return Integer.compare(thisPair, thatPair);
+        int pairComparison = compareForPairs(this, that);
+        if (pairComparison != EQUAL_COMPARISON){
+            return pairComparison;
         }
 
         return compareForHighestValue(this, that);
@@ -80,7 +79,18 @@ public class Hand implements Comparable<Hand> {
         return Arrays.stream(values)
                 .filter(i -> Arrays.stream(values).filter(j -> j == i).count() == 2)
                 .findFirst()
-                .orElse(notFound);
+                .orElse(NOT_FOUND);
+    }
+
+    private static int compareForPairs(Hand h1, Hand h2){
+        int v1 = h1.pairValue();
+        int v2 = h2.pairValue();
+
+        if (v1 == v2){
+            return EQUAL_COMPARISON;
+        }
+
+        return Integer.compare(v1, v2);
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
@@ -96,10 +106,10 @@ public class Hand implements Comparable<Hand> {
                 .mapToInt(i -> i)
                 .toArray();
 
-        return IntStream.range(0, cardsPerHand)
+        return IntStream.range(0, CARDS_PER_HAND)
                 .map(i -> Integer.compare(h1Values[i], h2Values[i]))
-                .filter(i -> i != 0)
+                .filter(i -> i != EQUAL_COMPARISON)
                 .findFirst()
-                .orElse(0);
+                .orElse(EQUAL_COMPARISON);
     }
 }
