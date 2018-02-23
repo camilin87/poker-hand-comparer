@@ -74,6 +74,22 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void handWithHighestCardWinsEvenWhenPartiallyTied(){
+        assertIsStrongest("3D 9C 8D 5H 2H", new String[]{
+                "3D 9C 8D 5H 2H",
+                "3H 9D 8H 4D 2D"
+        });
+    }
+
+    @Test
+    public void handWithEquivalentCardsAreTied(){
+        assertEquals(0, Hand.compare(
+                Hand.parse("3D 9C 8D 4H 2H"),
+                Hand.parse("3H 9D 8H 4D 2D")
+        ));
+    }
+
     private void assertIsStrongest(String expected, String[] hands){
         String strongest = Arrays.stream(Hand.parseMultiple(hands))
                 .sorted()

@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Hand implements Comparable<Hand> {
     private static final int cardsPerHand = 5;
@@ -54,18 +55,28 @@ public class Hand implements Comparable<Hand> {
         return hands;
     }
 
+    public static int compare(Hand h1, Hand h2){
+        return h1.compareTo(h2);
+    }
+
     @Override
     public int compareTo(Hand that) {
-        int thisMaxValue = Arrays.stream(this.cards)
-                .mapToInt(Card::getNumericValue)
-                .max()
-                .getAsInt();
+        int[] theseValues = Arrays.stream(this.cards)
+                .map(Card::getNumericValue)
+                .sorted((i, j) -> Integer.compare(j, i))
+                .mapToInt(i -> i)
+                .toArray();
 
-        int thatMaxValue = Arrays.stream(that.cards)
-                .mapToInt(Card::getNumericValue)
-                .max()
-                .getAsInt();
+        int[] thoseValues = Arrays.stream(that.cards)
+                .map(Card::getNumericValue)
+                .sorted((i, j) -> Integer.compare(j, i))
+                .mapToInt(i -> i)
+                .toArray();
 
-        return Integer.compare(thisMaxValue, thatMaxValue);
+        return IntStream.range(0, cardsPerHand)
+                .map(i -> Integer.compare(theseValues[i], thoseValues[i]))
+                .filter(i -> i != 0)
+                .findFirst()
+                .orElse(0);
     }
 }
