@@ -128,15 +128,20 @@ public class HandTest {
     }
 
     @Test
-    public void twoPairBeatsWeakerTwoPairWhenTheStrongestOneIsDifferent(){
+    public void twoPairBeatsWeakerTwoPairWhenTheStrongestPairIsDifferent(){
         assertIsStrongest("AH AD 3H 3S 2D", new String[]{
                 "2H 2S 4D 4H 9H",
                 "AH AD 3H 3S 2D"
         });
+
+        assertIsStrongest("2H 2S 5D 5H 9H", new String[]{
+                "2H 2S 5D 5H 9H",
+                "4H AD 3H 3S 4D"
+        });
     }
 
     @Test
-    public void twoPairBeatsWeakerTwoPairWhenTheStrongestOneIsEquivalent(){
+    public void twoPairBeatsWeakerTwoPairWhenTheStrongestPairIsEquivalent(){
         assertIsStrongest("4C 4S 3H 3S 2D", new String[]{
                 "2H 2S 4D 4H 9H",
                 "4C 4S 3H 3S 2D"

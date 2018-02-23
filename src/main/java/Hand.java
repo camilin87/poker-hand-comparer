@@ -75,17 +75,22 @@ public class Hand implements Comparable<Hand> {
     }
 
     private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
-        int[] groups1 = h1.equivalentValues(groupSize);
-        int[] groups2 = h2.equivalentValues(groupSize);
+        int[] groups1 = h1.equivalentValuesSortedDesc(groupSize);
+        int[] groups2 = h2.equivalentValuesSortedDesc(groupSize);
 
         int countComparison = Integer.compare(groups1.length, groups2.length);
         if (countComparison != EQUAL_COMPARISON){
             return countComparison;
         }
 
-        int groupSum1 = Arrays.stream(groups1).sum();
-        int groupSum2 = Arrays.stream(groups2).sum();
-        return Integer.compare(groupSum1, groupSum2);
+        for (int i = 0; i < groups1.length; i++) {
+            int result = Integer.compare(groups1[i], groups2[i]);
+            if (result != EQUAL_COMPARISON){
+                return result;
+            }
+        }
+
+        return EQUAL_COMPARISON;
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
@@ -99,7 +104,7 @@ public class Hand implements Comparable<Hand> {
                 .orElse(EQUAL_COMPARISON);
     }
 
-    private int[] equivalentValues(int groupSize){
+    private int[] equivalentValuesSortedDesc(int groupSize){
         Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
                 .collect(Collectors.groupingBy(Card::getNumericValue));
 
@@ -107,6 +112,7 @@ public class Hand implements Comparable<Hand> {
                 .keySet()
                 .stream()
                 .filter(k -> equivalentCards.get(k).size() == groupSize)
+                .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
     }
