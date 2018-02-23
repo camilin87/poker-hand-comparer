@@ -62,20 +62,15 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        int twoPairComparison = compareForTwoPais(this, that);
-        if (twoPairComparison != EQUAL_COMPARISON){
-            return twoPairComparison;
-        }
-
-        int pairComparison = compareForPairs(this, that);
-        if (pairComparison != EQUAL_COMPARISON){
-            return pairComparison;
+        int pairsComparison = compareForPairs(this, that);
+        if (pairsComparison != EQUAL_COMPARISON){
+            return pairsComparison;
         }
 
         return compareForHighestValue(this, that);
     }
 
-    private static int compareForTwoPais(Hand h1, Hand h2){
+    private static int compareForPairs(Hand h1, Hand h2){
         int[] p1 = h1.pairValues();
         int[] p2 = h2.pairValues();
 
@@ -85,23 +80,6 @@ public class Hand implements Comparable<Hand> {
         }
 
         return Integer.compare(Arrays.stream(p1).sum(), Arrays.stream(p2).sum());
-    }
-
-    private static int compareForPairs(Hand h1, Hand h2){
-        int v1 = h1.pairValue();
-        int v2 = h2.pairValue();
-
-        if (v1 == v2){
-            return EQUAL_COMPARISON;
-        }
-
-        return Integer.compare(v1, v2);
-    }
-
-    private int pairValue(){
-        return Arrays.stream(pairValues())
-                .max()
-                .orElse(NOT_FOUND);
     }
 
     private int[] pairValues(){
