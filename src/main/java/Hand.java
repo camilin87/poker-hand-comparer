@@ -13,6 +13,24 @@ public class Hand implements Comparable<Hand> {
     private static final int PAIR_SIZE = 2;
     private static final int[] EXPECTED_FULL_HOUSE_GROUP_SIZES = {2, 3};
 
+    private interface HandComparisonRule {
+        int compare(Hand h1, Hand h2);
+    }
+
+    private interface HandBooleanPropertyEvaluationRule {
+        boolean read(Hand hand);
+    }
+
+    private static final HandComparisonRule[] COMPARISON_RULES = new HandComparisonRule[]{
+            compareForProperty(Hand::isStraightFlush),
+            compareForGroupSize(FOUR_OF_A_KIND_SIZE),
+            compareForProperty(Hand::isFullHouse),
+            compareForProperty(Hand::isFlush),
+            compareForProperty(Hand::isStraight),
+            compareForGroupSize(THREE_OF_A_KIND_SIZE),
+            compareForGroupSize(PAIR_SIZE),
+            Hand::compareForHighestValue
+    };
 
     private final Card[] cards;
 
@@ -64,35 +82,16 @@ public class Hand implements Comparable<Hand> {
         return h1.compareTo(h2);
     }
 
-    private interface HandComparisonRule {
-        int compare(Hand h1, Hand h2);
-    }
-
-    private interface HandBooleanPropertyEvaluationRule {
-        boolean read(Hand hand);
-    }
-
     @Override
     public int compareTo(Hand that) {
-        HandComparisonRule[] rules = new HandComparisonRule[]{
-                compare(Hand::isStraightFlush),
-                compareForGroupSize(FOUR_OF_A_KIND_SIZE),
-                compare(Hand::isFullHouse),
-                compare(Hand::isFlush),
-                compare(Hand::isStraight),
-                compareForGroupSize(THREE_OF_A_KIND_SIZE),
-                compareForGroupSize(PAIR_SIZE),
-                Hand::compareForHighestValue
-        };
-
-        return Arrays.stream(rules)
+        return Arrays.stream(COMPARISON_RULES)
                 .map(r -> r.compare(this, that))
                 .filter(c -> c != EQUAL_COMPARISON)
                 .findFirst()
                 .orElse(EQUAL_COMPARISON);
     }
 
-    private HandComparisonRule compare(HandBooleanPropertyEvaluationRule r){
+    private static HandComparisonRule compareForProperty(HandBooleanPropertyEvaluationRule r){
         return (Hand h1, Hand h2) -> {
             int s1 = r.read(h1) ? 1 : 0;
             int s2 = r.read(h2) ? 1 : 0;
