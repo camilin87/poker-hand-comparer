@@ -7,6 +7,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class HandTest {
+    @Test
+    public void triggerABuildFailure(){
+        assert false;
+    }
+
     @Test(expected = NullPointerException.class)
     public void parseFailsWhenNull(){
         Hand.parse(null);
