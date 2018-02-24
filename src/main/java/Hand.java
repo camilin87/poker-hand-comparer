@@ -61,29 +61,25 @@ public class Hand implements Comparable<Hand> {
         return h1.compareTo(h2);
     }
 
+    private interface HandComparisonRule {
+        int compare(Hand h1, Hand h2);
+    }
+
     @Override
     public int compareTo(Hand that) {
-        int flushComparison = compareForFlush(this, that);
-        if (flushComparison != EQUAL_COMPARISON){
-            return flushComparison;
-        }
+        HandComparisonRule[] rules = new HandComparisonRule[]{
+                Hand::compareForFlush,
+                Hand::compareForStraight,
+                Hand::compareForThreeOfAKind,
+                Hand::compareForPairs,
+                Hand::compareForHighestValue
+        };
 
-        int straightComparison = compareForStraight(this, that);
-        if (straightComparison != EQUAL_COMPARISON){
-            return straightComparison;
-        }
-
-        int threeOfAKindComparison = compareForEquivalentGroups(this, that, THREE_OF_A_KIND_SIZE);
-        if (threeOfAKindComparison != EQUAL_COMPARISON){
-            return threeOfAKindComparison;
-        }
-
-        int pairsComparison = compareForEquivalentGroups(this, that, PAIR_SIZE);
-        if (pairsComparison != EQUAL_COMPARISON){
-            return pairsComparison;
-        }
-
-        return compareForHighestValue(this, that);
+        return Arrays.stream(rules)
+                .map(r -> r.compare(this, that))
+                .filter(c -> c != EQUAL_COMPARISON)
+                .findFirst()
+                .orElse(EQUAL_COMPARISON);
     }
 
     private static int compareForFlush(Hand h1, Hand h2){
@@ -98,6 +94,14 @@ public class Hand implements Comparable<Hand> {
         int s2 = h2.isStraight() ? 1 : 0;
 
         return Integer.compare(s1, s2);
+    }
+
+    private static int compareForThreeOfAKind(Hand h1, Hand h2){
+        return compareForEquivalentGroups(h1, h2, THREE_OF_A_KIND_SIZE);
+    }
+
+    private static int compareForPairs(Hand h1, Hand h2){
+        return compareForEquivalentGroups(h1, h2, PAIR_SIZE);
     }
 
     private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
