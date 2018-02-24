@@ -180,6 +180,14 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void straightsAreUntiedByTheHighestCard(){
+        assertIsStrongest("3H 4S 5C 6H 7D", new String[]{
+                "2C 3D 4H 5S 6C",
+                "3H 4S 5C 6H 7D"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 
