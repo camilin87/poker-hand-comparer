@@ -1,4 +1,6 @@
-# Poker Hand Comparer    
+# Poker Hand Comparer  
+
+[![Build Status](https://travis-ci.org/camilin87/poker-hand-comparer.svg?branch=master)](https://travis-ci.org/camilin87/poker-hand-comparer)
 
 Compares multiple poker hands and displays the winner  
 
