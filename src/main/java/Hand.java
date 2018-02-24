@@ -8,6 +8,9 @@ public class Hand implements Comparable<Hand> {
     private static final String CARD_DELIMITER = " ";
     private static final int EQUAL_COMPARISON = 0;
     private static final int CARDS_PER_HAND = 5;
+    private static final int FOUR_OF_A_KIND_SIZE = 4;
+    private static final int THREE_OF_A_KIND_SIZE = 3;
+    private static final int PAIR_SIZE = 2;
     private static final int[] EXPECTED_FULL_HOUSE_GROUP_SIZES = {2, 3};
 
 
@@ -65,16 +68,20 @@ public class Hand implements Comparable<Hand> {
         int compare(Hand h1, Hand h2);
     }
 
+    private interface HandBooleanPropertyEvaluationRule {
+        boolean read(Hand hand);
+    }
+
     @Override
     public int compareTo(Hand that) {
         HandComparisonRule[] rules = new HandComparisonRule[]{
-                Hand::compareForStraightFlush,
-                Hand::compareForFourOfAKind,
-                Hand::compareForFullHouse,
-                Hand::compareForFlush,
-                Hand::compareForStraight,
-                Hand::compareForThreeOfAKind,
-                Hand::compareForPairs,
+                compare(Hand::isStraightFlush),
+                compareForGroupSize(FOUR_OF_A_KIND_SIZE),
+                compare(Hand::isFullHouse),
+                compare(Hand::isFlush),
+                compare(Hand::isStraight),
+                compareForGroupSize(THREE_OF_A_KIND_SIZE),
+                compareForGroupSize(PAIR_SIZE),
                 Hand::compareForHighestValue
         };
 
@@ -85,44 +92,17 @@ public class Hand implements Comparable<Hand> {
                 .orElse(EQUAL_COMPARISON);
     }
 
-    private static int compareForFullHouse(Hand h1, Hand h2) {
-        int s1 = h1.isFullHouse() ? 1 : 0;
-        int s2 = h2.isFullHouse() ? 1 : 0;
+    private HandComparisonRule compare(HandBooleanPropertyEvaluationRule r){
+        return (Hand h1, Hand h2) -> {
+            int s1 = r.read(h1) ? 1 : 0;
+            int s2 = r.read(h2) ? 1 : 0;
 
-        return Integer.compare(s1, s2);
+            return Integer.compare(s1, s2);
+        };
     }
 
-    private static int compareForStraightFlush(Hand h1, Hand h2) {
-        int s1 = h1.isStraightFlush() ? 1 : 0;
-        int s2 = h2.isStraightFlush() ? 1 : 0;
-
-        return Integer.compare(s1, s2);
-    }
-
-    private static int compareForFlush(Hand h1, Hand h2){
-        int s1 = h1.isFlush() ? 1 : 0;
-        int s2 = h2.isFlush() ? 1 : 0;
-
-        return Integer.compare(s1, s2);
-    }
-
-    private static int compareForStraight(Hand h1, Hand h2){
-        int s1 = h1.isStraight() ? 1 : 0;
-        int s2 = h2.isStraight() ? 1 : 0;
-
-        return Integer.compare(s1, s2);
-    }
-
-    private static int compareForFourOfAKind(Hand h1, Hand h2){
-        return compareForEquivalentGroups(h1, h2, 4);
-    }
-
-    private static int compareForThreeOfAKind(Hand h1, Hand h2){
-        return compareForEquivalentGroups(h1, h2, 3);
-    }
-
-    private static int compareForPairs(Hand h1, Hand h2){
-        return compareForEquivalentGroups(h1, h2, 2);
+    private static HandComparisonRule compareForGroupSize(int groupSize){
+        return (Hand h1, Hand h2) -> compareForEquivalentGroups(h1, h2, groupSize);
     }
 
     private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
