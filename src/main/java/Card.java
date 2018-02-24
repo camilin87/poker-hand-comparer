@@ -84,4 +84,8 @@ public class Card {
     public int getNumericValue() {
         return values.get(value);
     }
+
+    public char getClub(){
+        return club;
+    }
 }

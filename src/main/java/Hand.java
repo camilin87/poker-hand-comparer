@@ -63,6 +63,11 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
+        int flushComparison = compareForFlush(this, that);
+        if (flushComparison != EQUAL_COMPARISON){
+            return flushComparison;
+        }
+
         int straightComparison = compareForStraight(this, that);
         if (straightComparison != EQUAL_COMPARISON){
             return straightComparison;
@@ -79,6 +84,13 @@ public class Hand implements Comparable<Hand> {
         }
 
         return compareForHighestValue(this, that);
+    }
+
+    private static int compareForFlush(Hand h1, Hand h2){
+        int s1 = h1.isFlush() ? 1 : 0;
+        int s2 = h2.isFlush() ? 1 : 0;
+
+        return Integer.compare(s1, s2);
     }
 
     private static int compareForStraight(Hand h1, Hand h2){
@@ -126,6 +138,14 @@ public class Hand implements Comparable<Hand> {
                 .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
+    }
+
+    private boolean isFlush(){
+        long uniqueClubs = Arrays.stream(cards)
+                .map(Card::getClub)
+                .distinct()
+                .count();
+        return uniqueClubs == 1;
     }
 
     private boolean isStraight(){
