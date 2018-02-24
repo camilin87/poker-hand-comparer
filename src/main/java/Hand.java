@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,7 @@ public class Hand implements Comparable<Hand> {
     @Override
     public int compareTo(Hand that) {
         HandComparisonRule[] rules = new HandComparisonRule[]{
+                Hand::compareForFullHouse,
                 Hand::compareForFlush,
                 Hand::compareForStraight,
                 Hand::compareForThreeOfAKind,
@@ -80,6 +82,13 @@ public class Hand implements Comparable<Hand> {
                 .filter(c -> c != EQUAL_COMPARISON)
                 .findFirst()
                 .orElse(EQUAL_COMPARISON);
+    }
+
+    private static int compareForFullHouse(Hand h1, Hand h2) {
+        int s1 = h1.isFullHouse() ? 1 : 0;
+        int s2 = h2.isFullHouse() ? 1 : 0;
+
+        return Integer.compare(s1, s2);
     }
 
     private static int compareForFlush(Hand h1, Hand h2){
@@ -142,6 +151,20 @@ public class Hand implements Comparable<Hand> {
                 .sorted((i, j) -> Integer.compare(j, i))
                 .mapToInt(i -> i)
                 .toArray();
+    }
+
+    private boolean isFullHouse(){
+        Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
+                .collect(Collectors.groupingBy(Card::getNumericValue));
+
+        int[] equivalentGroupSizes = equivalentCards.values()
+                .stream()
+                .map(l -> l.size())
+                .sorted()
+                .mapToInt(i -> i)
+                .toArray();
+
+        return Arrays.equals(new int[]{2, 3}, equivalentGroupSizes);
     }
 
     private boolean isFlush(){

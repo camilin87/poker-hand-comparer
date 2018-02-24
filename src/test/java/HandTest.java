@@ -204,6 +204,14 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void fullHouseBeatsFlush(){
+        assertIsStrongest("2C 2S 2H 5C 5S", new String[]{
+                "2C 2S 2H 5C 5S",
+                "3D 9D 5D 2D 7D"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 
