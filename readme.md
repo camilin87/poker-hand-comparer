@@ -5,13 +5,39 @@ Compares multiple poker hands and displays the winner
 ## Usage  
 
 ```bash
-comparer "2H 3D 5S 9C KD" "2C 3H 4S 8C AH" "7H 8H 9H 6H 5H"
+./build/install/PokerHandComparer/bin/PokerHandComparer "2H 3D 5S 9C KD" "2C 3H 4S 8C AH" "7H 8H 9H 6H 5H"
 ```
 
 Prints out:
 
 ```
+Poker Hand Evaluator
+Parsing:
+2H 3D 5S 9C KD
 2C 3H 4S 8C AH
+7H 8H 9H 6H 5H
+--
+7H 8H 9H 6H 5H
+```
+
+## Development  
+
+### Build the project  
+
+```bash
+gradle clean && gradle build && gradle installDist
+```
+
+### Run the tests  
+
+```bash
+gradle test
+```
+
+### Package the application  
+
+```bash
+gradle distZip
 ```
 
 ## Examples  
