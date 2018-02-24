@@ -68,6 +68,7 @@ public class Hand implements Comparable<Hand> {
     @Override
     public int compareTo(Hand that) {
         HandComparisonRule[] rules = new HandComparisonRule[]{
+                Hand::compareForStraightFlush,
                 Hand::compareForFourOfAKind,
                 Hand::compareForFullHouse,
                 Hand::compareForFlush,
@@ -87,6 +88,13 @@ public class Hand implements Comparable<Hand> {
     private static int compareForFullHouse(Hand h1, Hand h2) {
         int s1 = h1.isFullHouse() ? 1 : 0;
         int s2 = h2.isFullHouse() ? 1 : 0;
+
+        return Integer.compare(s1, s2);
+    }
+
+    private static int compareForStraightFlush(Hand h1, Hand h2) {
+        int s1 = h1.isStraightFlush() ? 1 : 0;
+        int s2 = h2.isStraightFlush() ? 1 : 0;
 
         return Integer.compare(s1, s2);
     }
@@ -170,6 +178,10 @@ public class Hand implements Comparable<Hand> {
     private Map<Integer, List<Card>> getEquivalentCards() {
         return Arrays.stream(cards)
                 .collect(Collectors.groupingBy(Card::getNumericValue));
+    }
+
+    private boolean isStraightFlush(){
+        return isStraight() && isFlush();
     }
 
     private boolean isFlush(){

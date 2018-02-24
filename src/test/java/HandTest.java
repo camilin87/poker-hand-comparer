@@ -236,6 +236,22 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void straightFlushBeatsFourOfAKind(){
+        assertIsStrongest("2C 3C 4C 5C 6C", new String[]{
+                "2C 3C 4C 5C 6C",
+                "AC AD AH AS JC"
+        });
+    }
+
+    @Test
+    public void straightFlushesAreUntiedByHighestCard(){
+        assertIsStrongest("3D 4D 5D 6D 7D", new String[]{
+                "2C 3C 4C 5C 6C",
+                "3D 4D 5D 6D 7D"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 
