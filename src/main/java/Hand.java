@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +10,8 @@ public class Hand implements Comparable<Hand> {
     private static final int CARDS_PER_HAND = 5;
     private static final int PAIR_SIZE = 2;
     private static final int THREE_OF_A_KIND_SIZE = 3;
+    private static final int[] EXPECTED_FULL_GROUP_SIZES = {2, 3};
+
 
     private final Card[] cards;
 
@@ -141,8 +142,7 @@ public class Hand implements Comparable<Hand> {
     }
 
     private int[] equivalentValuesSortedDesc(int groupSize){
-        Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
-                .collect(Collectors.groupingBy(Card::getNumericValue));
+        Map<Integer, List<Card>> equivalentCards = getEquivalentCards();
 
         return equivalentCards
                 .keySet()
@@ -154,17 +154,19 @@ public class Hand implements Comparable<Hand> {
     }
 
     private boolean isFullHouse(){
-        Map<Integer, List<Card>> equivalentCards = Arrays.stream(cards)
-                .collect(Collectors.groupingBy(Card::getNumericValue));
-
-        int[] equivalentGroupSizes = equivalentCards.values()
+        int[] groupSizes = getEquivalentCards()
+                .values()
                 .stream()
                 .map(l -> l.size())
                 .sorted()
                 .mapToInt(i -> i)
                 .toArray();
+        return Arrays.equals(EXPECTED_FULL_GROUP_SIZES, groupSizes);
+    }
 
-        return Arrays.equals(new int[]{2, 3}, equivalentGroupSizes);
+    private Map<Integer, List<Card>> getEquivalentCards() {
+        return Arrays.stream(cards)
+                .collect(Collectors.groupingBy(Card::getNumericValue));
     }
 
     private boolean isFlush(){
