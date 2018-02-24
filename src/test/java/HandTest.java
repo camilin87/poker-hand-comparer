@@ -8,22 +8,22 @@ import static org.junit.Assert.assertEquals;
 
 public class HandTest {
     @Test(expected = NullPointerException.class)
-    public void failsWhenNull(){
+    public void parseFailsWhenNull(){
         Hand.parse(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void failsWhenEmpty(){
+    public void parseFailsWhenEmpty(){
         Hand.parse("");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void failsWhenLessThanFiveCards(){
+    public void parseFailsWhenLessThanFiveCards(){
         Hand.parse("2D 3D 4D 5D");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void failsWhenMoreThanFiveCards(){
+    public void parseFailsWhenMoreThanFiveCards(){
         Hand.parse("3D 3D 4D 5D 6D 7D");
     }
 
@@ -35,7 +35,7 @@ public class HandTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void failsWhenDuplicatedCard(){
+    public void parseFailsWhenDuplicatedCard(){
         Hand.parse("2D 2D 4D 5D 6D");
     }
 
@@ -59,8 +59,19 @@ public class HandTest {
         assertEquals(String.join("|", expected), String.join("|", actual));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void parseMultipleFailsWhenNull(){
+        Hand.parseMultiple(null);
+    }
+
+    @Test
+    public void parseMultipleReturnsAnEmptyArrayWhenPassedAnEmptyArray(){
+        assertEquals(0, Hand.parseMultiple(new String[0]).length);
+        assertEquals(0, Hand.parseMultiple(new String[]{}).length);
+    }
+
     @Test(expected = IllegalArgumentException.class)
-    public void failsWhenDuplicatedCardIsFoundOnDifferentHands(){
+    public void parseFailsWhenDuplicatedCardIsFoundOnDifferentHands(){
         String[] input = new String[]{
                 "2D 3D 4D 5D 6D",
                 "7D 8D 9D AD 2D"
