@@ -8,7 +8,7 @@ public class Hand implements Comparable<Hand> {
     private static final String CARD_DELIMITER = " ";
     private static final int EQUAL_COMPARISON = 0;
     private static final int CARDS_PER_HAND = 5;
-    private static final int[] EXPECTED_FULL_GROUP_SIZES = {2, 3};
+    private static final int[] EXPECTED_FULL_HOUSE_GROUP_SIZES = {2, 3};
 
 
     private final Card[] cards;
@@ -134,19 +134,19 @@ public class Hand implements Comparable<Hand> {
             return countComparison;
         }
 
-        return IntStream.range(0, groups1.length)
-                .map(i -> Integer.compare(groups1[i], groups2[i]))
-                .filter(i -> i != EQUAL_COMPARISON)
-                .findFirst()
-                .orElse(EQUAL_COMPARISON);
+        return firstDifference(groups1, groups2);
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
         int[] h1Values = h1.getValuesSortedDesc();
         int[] h2Values = h2.getValuesSortedDesc();
 
-        return IntStream.range(0, CARDS_PER_HAND)
-                .map(i -> Integer.compare(h1Values[i], h2Values[i]))
+        return firstDifference(h1Values, h2Values);
+    }
+
+    private static int firstDifference(int[] g1, int[] g2){
+        return IntStream.range(0, g1.length)
+                .map(i -> Integer.compare(g1[i], g2[i]))
                 .filter(i -> i != EQUAL_COMPARISON)
                 .findFirst()
                 .orElse(EQUAL_COMPARISON);
@@ -168,11 +168,11 @@ public class Hand implements Comparable<Hand> {
         int[] groupSizes = getEquivalentCards()
                 .values()
                 .stream()
-                .map(l -> l.size())
+                .map(List::size)
                 .sorted()
                 .mapToInt(i -> i)
                 .toArray();
-        return Arrays.equals(EXPECTED_FULL_GROUP_SIZES, groupSizes);
+        return Arrays.equals(EXPECTED_FULL_HOUSE_GROUP_SIZES, groupSizes);
     }
 
     private Map<Integer, List<Card>> getEquivalentCards() {
