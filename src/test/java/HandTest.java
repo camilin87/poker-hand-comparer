@@ -250,6 +250,11 @@ public class HandTest {
                 "2C 3C 4C 5C 6C",
                 "3D 4D 5D 6D 7D"
         });
+
+        assertIsStrongest("AC KC QC JC TC", new String[]{
+                "AC KC QC JC TC",
+                "KD QD JD TD 9D"
+        });
     }
 
     private void assertIsStrongest(final String expected, final String[] hands) {
