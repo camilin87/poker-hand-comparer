@@ -101,19 +101,17 @@ public class Hand implements Comparable<Hand> {
     }
 
     private static HandComparisonRule compareForGroupSize(int groupSize){
-        return (Hand h1, Hand h2) -> compareForEquivalentGroups(h1, h2, groupSize);
-    }
+        return (Hand h1, Hand h2) -> {
+            int[] groups1 = h1.equivalentValuesSortedDesc(groupSize);
+            int[] groups2 = h2.equivalentValuesSortedDesc(groupSize);
 
-    private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
-        int[] groups1 = h1.equivalentValuesSortedDesc(groupSize);
-        int[] groups2 = h2.equivalentValuesSortedDesc(groupSize);
+            int countComparison = Integer.compare(groups1.length, groups2.length);
+            if (countComparison != EQUAL_COMPARISON){
+                return countComparison;
+            }
 
-        int countComparison = Integer.compare(groups1.length, groups2.length);
-        if (countComparison != EQUAL_COMPARISON){
-            return countComparison;
-        }
-
-        return firstDifference(groups1, groups2);
+            return firstDifference(groups1, groups2);
+        };
     }
 
     private static int compareForHighestValue(Hand h1, Hand h2){
