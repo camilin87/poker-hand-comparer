@@ -220,6 +220,22 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void fourOfAKindBeatsFullHouse(){
+        assertIsStrongest("2C 2D 2H 2S 4C", new String[]{
+                "2C 2D 2H 2S 4C",
+                "AC AD AH 9S 9C"
+        });
+    }
+
+    @Test
+    public void fourOfAKindBeatsWeakerFourOfAKind(){
+        assertIsStrongest("4C 4D 4H 4S 3C", new String[]{
+                "2C 2D 2H 2S AC",
+                "4C 4D 4H 4S 3C"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 

@@ -8,8 +8,6 @@ public class Hand implements Comparable<Hand> {
     private static final String CARD_DELIMITER = " ";
     private static final int EQUAL_COMPARISON = 0;
     private static final int CARDS_PER_HAND = 5;
-    private static final int PAIR_SIZE = 2;
-    private static final int THREE_OF_A_KIND_SIZE = 3;
     private static final int[] EXPECTED_FULL_GROUP_SIZES = {2, 3};
 
 
@@ -70,6 +68,7 @@ public class Hand implements Comparable<Hand> {
     @Override
     public int compareTo(Hand that) {
         HandComparisonRule[] rules = new HandComparisonRule[]{
+                Hand::compareForFourOfAKind,
                 Hand::compareForFullHouse,
                 Hand::compareForFlush,
                 Hand::compareForStraight,
@@ -106,12 +105,16 @@ public class Hand implements Comparable<Hand> {
         return Integer.compare(s1, s2);
     }
 
+    private static int compareForFourOfAKind(Hand h1, Hand h2){
+        return compareForEquivalentGroups(h1, h2, 4);
+    }
+
     private static int compareForThreeOfAKind(Hand h1, Hand h2){
-        return compareForEquivalentGroups(h1, h2, THREE_OF_A_KIND_SIZE);
+        return compareForEquivalentGroups(h1, h2, 3);
     }
 
     private static int compareForPairs(Hand h1, Hand h2){
-        return compareForEquivalentGroups(h1, h2, PAIR_SIZE);
+        return compareForEquivalentGroups(h1, h2, 2);
     }
 
     private static int compareForEquivalentGroups(Hand h1, Hand h2, int groupSize){
