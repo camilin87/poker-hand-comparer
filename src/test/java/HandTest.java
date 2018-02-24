@@ -212,6 +212,14 @@ public class HandTest {
         });
     }
 
+    @Test
+    public void fullHousesAreUntiedByTheHighestThreeEqualCards(){
+        assertIsStrongest("6C 6D 6H 2S 2C", new String[]{
+                "6C 6D 6H 2S 2C",
+                "5C 5D 5H 9S 9C"
+        });
+    }
+
     private void assertIsStrongest(final String expected, final String[] hands) {
         assertIsStrongestInternal(expected, hands);
 
