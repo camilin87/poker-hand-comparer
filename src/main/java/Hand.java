@@ -13,10 +13,12 @@ public class Hand implements Comparable<Hand> {
     private static final int PAIR_SIZE = 2;
     private static final int[] EXPECTED_FULL_HOUSE_GROUP_SIZES = {2, 3};
 
+    @FunctionalInterface
     private interface HandComparisonRule {
         int compare(Hand h1, Hand h2);
     }
 
+    @FunctionalInterface
     private interface HandBooleanPropertyEvaluationRule {
         boolean read(Hand hand);
     }
