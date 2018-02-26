@@ -1,6 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -16,11 +17,6 @@ public class Hand implements Comparable<Hand> {
     @FunctionalInterface
     private interface HandComparisonRule {
         int compare(Hand h1, Hand h2);
-    }
-
-    @FunctionalInterface
-    private interface HandBooleanPropertyEvaluationRule {
-        boolean read(Hand hand);
     }
 
     private static final HandComparisonRule[] COMPARISON_RULES = new HandComparisonRule[]{
@@ -93,10 +89,10 @@ public class Hand implements Comparable<Hand> {
                 .orElse(EQUAL_COMPARISON);
     }
 
-    private static HandComparisonRule compareForProperty(HandBooleanPropertyEvaluationRule r){
+    private static HandComparisonRule compareForProperty(Predicate<Hand> r){
         return (Hand h1, Hand h2) -> {
-            int s1 = r.read(h1) ? 1 : 0;
-            int s2 = r.read(h2) ? 1 : 0;
+            int s1 = r.test(h1) ? 1 : 0;
+            int s2 = r.test(h2) ? 1 : 0;
 
             return Integer.compare(s1, s2);
         };
