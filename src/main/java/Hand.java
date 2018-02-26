@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -14,21 +15,16 @@ public class Hand implements Comparable<Hand> {
     private static final int PAIR_SIZE = 2;
     private static final int[] EXPECTED_FULL_HOUSE_GROUP_SIZES = {2, 3};
 
-    @FunctionalInterface
-    private interface HandComparisonRule {
-        int compare(Hand h1, Hand h2);
-    }
-
-    private static final HandComparisonRule[] COMPARISON_RULES = new HandComparisonRule[]{
-            compareForProperty(Hand::isStraightFlush),
-            compareForGroupSize(FOUR_OF_A_KIND_SIZE),
-            compareForProperty(Hand::isFullHouse),
-            compareForProperty(Hand::isFlush),
-            compareForProperty(Hand::isStraight),
-            compareForGroupSize(THREE_OF_A_KIND_SIZE),
-            compareForGroupSize(PAIR_SIZE),
-            Hand::compareForHighestValue
-    };
+    private static final List<Comparator<Hand>> COMPARISON_RULES = Arrays.asList(
+        compareForProperty(Hand::isStraightFlush),
+        compareForGroupSize(FOUR_OF_A_KIND_SIZE),
+        compareForProperty(Hand::isFullHouse),
+        compareForProperty(Hand::isFlush),
+        compareForProperty(Hand::isStraight),
+        compareForGroupSize(THREE_OF_A_KIND_SIZE),
+        compareForGroupSize(PAIR_SIZE),
+        Hand::compareForHighestValue
+    );
 
     private final Card[] cards;
 
@@ -82,14 +78,15 @@ public class Hand implements Comparable<Hand> {
 
     @Override
     public int compareTo(Hand that) {
-        return Arrays.stream(COMPARISON_RULES)
+        return COMPARISON_RULES
+                .stream()
                 .map(r -> r.compare(this, that))
                 .filter(c -> c != EQUAL_COMPARISON)
                 .findFirst()
                 .orElse(EQUAL_COMPARISON);
     }
 
-    private static HandComparisonRule compareForProperty(Predicate<Hand> r){
+    private static Comparator<Hand> compareForProperty(Predicate<Hand> r){
         return (Hand h1, Hand h2) -> {
             int s1 = r.test(h1) ? 1 : 0;
             int s2 = r.test(h2) ? 1 : 0;
@@ -98,7 +95,7 @@ public class Hand implements Comparable<Hand> {
         };
     }
 
-    private static HandComparisonRule compareForGroupSize(int groupSize){
+    private static Comparator<Hand> compareForGroupSize(int groupSize){
         return (Hand h1, Hand h2) -> {
             int[] groups1 = h1.equivalentValuesSortedDesc(groupSize);
             int[] groups2 = h2.equivalentValuesSortedDesc(groupSize);
