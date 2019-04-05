@@ -18,6 +18,10 @@ Prints out:
 
 ## Development  
 
+```bash
+sdk use java 11.0.1-open
+```
+
 ### Build the project  
 
 ```bash
